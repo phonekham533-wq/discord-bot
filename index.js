@@ -16,10 +16,10 @@ const client = new Client({
     ],
 });
 
-// ตั้งค่า Gemini AI
+// ตั้งค่า Gemini AI (ใช้ gemini-1.5-flash ตัวล่าสุด)
 const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genai.getGenerativeModel({ 
-    model: 'gemini-pro',
+    model: 'gemini-1.5-flash',
     systemInstruction: "มึงคือบอทอัจฉริยะสารพัดประโยชน์ ปากหมานิดๆ กวนโอ๊ยแบบเพื่อนซี้ ห้ามพูดจาทางการเด็ดขาด!"
 });
 
@@ -28,7 +28,7 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-    // ถ้าข้อความมาจากบอทด้วยกันเอง หรือไม่ได้แท็ก/พิมพ์คุย ให้ข้าม
+    // ถ้าข้อความมาจากบอทด้วยกันเอง ให้ข้าม
     if (message.author.bot) return;
 
     try {
