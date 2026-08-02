@@ -28,7 +28,7 @@ client.on('messageCreate', async message => {
         const result = await model.generateContent(message.content);
         const answerText = result.response.text();
 
-        if (answerText.length > 1900) {
+        if (answerTextจ
             const buffer = Buffer.from(answerText, 'utf-8');
             const attachment = new AttachmentBuilder(buffer, { name: 'AI_answer.txt' });
             
