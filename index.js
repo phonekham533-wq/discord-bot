@@ -31,7 +31,7 @@ client.on('messageCreate', async (message) => {
         await message.reply(response.text());
     } catch (error) {
         console.error("Error Handling:", error);
-        await message.reply("ระบบรวนว่ะเพื่อน สมองช็อตแป๊บ 555");
+        // ตรงนี้ปล่อยว่างไว้ ไม่ต้องส่งข้อความตอบกลับใดๆ ทั้งสิ้นเมื่อพัง
     }
 });
 
