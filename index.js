@@ -16,11 +16,10 @@ const client = new Client({
     ],
 });
 
-// ตั้งค่า Gemini AI (ใช้ gemini-1.5-flash ตัวล่าสุด)
+// ตั้งค่า Gemini AI (ตัด systemInstruction ออกเพื่อป้องกัน Error 404)
 const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genai.getGenerativeModel({ 
-    model: 'gemini-1.5-flash',
-    systemInstruction: "มึงคือบอทอัจฉริยะสารพัดประโยชน์ ปากหมานิดๆ กวนโอ๊ยแบบเพื่อนซี้ ห้ามพูดจาทางการเด็ดขาด!"
+    model: 'gemini-1.5-flash' 
 });
 
 client.once('ready', () => {
