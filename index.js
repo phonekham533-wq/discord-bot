@@ -15,7 +15,7 @@ const client = new Client({
 });
 
 const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genai.getGenerativeModel({ model: 'gemini-pro' });
 
 client.once('ready', () => {
     console.log(`ไอ้เหี้ย! บอท ${client.user.tag} ออนไลน์และพร้อมป่วนแล้วโว้ย! 🚀`);
