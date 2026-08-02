@@ -1,6 +1,7 @@
 {
-  "name": "discord-bot",
+  "name": "jarvis-discord-gemini-bot",
   "version": "1.0.0",
+  "description": "Discord Bot integrated with Google Gemini API, managed by J.A.R.V.I.S.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -8,5 +9,9 @@
   "dependencies": {
     "@google/generative-ai": "^0.1.1",
     "discord.js": "^14.14.1"
-  }
+  },
+  "engines": {
+    "node": ">=16.9.0"
+  },
+  "private": true
 }
