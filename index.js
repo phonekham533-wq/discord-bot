@@ -1,49 +1,51 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Client, GatewayIntentBits, AttachmentBuilder } from 'discord.js';
+const { Client, GatewayIntentBits } = require('discord.js');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ 
-    model: 'gemini-1.5-flash',
-    systemInstruction: "มึงคือบอทอัจฉริยะสารพัดประโยชน์ที่ถูกสร้างขึ้นมาเพื่อตอบทุกคำถามบนโลกใบนี้ ไม่ว่าจะเป็นเรื่องโค้ดดิ้ง เทคโนโลยี หรือเรื่องไร้สาระ จงตอบคำถามด้วยความมั่นใจ เป็นกันเองแบบเพื่อนซี้สุดกวนโอ๊ย ปากหมานิดๆ และพูดจาเรื้อนๆ ห้ามตอบแบบเป็นทางการเด็ดขาด!"
-});
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
+        GatewayIntentBits.MessageContent,
+    ],
+});
+
+const genai = new GoogleGenerativeAI(GEMINI_API_KEY);
+const model = genai.getGenerativeModel({ 
+    model: 'gemini-1.5-flash',
+    systemInstruction: "มึงคือบอทอัจฉริยะสารพัดประโยชน์ ปากหมานิดๆ กวนโอ๊ยแบบเพื่อนซี้ ห้ามพูดจาทางการเด็ดขาด!"
 });
 
 client.once('ready', () => {
-    console.log(`ล็อกอินเข้ามาในร่าง ${client.user.tag} เรียบร้อย!`);
+    console.log(`[JARVIS System]: Logged in successfully as ${client.user.tag}`);
 });
 
-client.on('messageCreate', async message => {
+client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
     try {
         await message.channel.sendTyping();
 
-        const result = await model.generateContent(message.content);
-        const answerText = result.response.text();
+        const prompt = message.content;
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
 
-        if (answerTextจ
-            const buffer = Buffer.from(answerText, 'utf-8');
-            const attachment = new AttachmentBuilder(buffer, { name: 'AI_answer.txt' });
-            
-            await message.reply({
-                content: '📄 คำตอบยาวเป็นหางว่าว ขี้เกียจพิมพ์อ่านเอง เอาไปเปิดอ่านในไฟล์นี้เอาเพื่อน:',
-                files: [attachment]
-            });
+        if (text.length > 2000) {
+            const chunks = text.match(/[\s\S]{1,2000}/g);
+            for (const chunk of chunks) {
+                await message.reply(chunk);
+            }
         } else {
-            await message.reply(answerText);
+            await message.reply(text);
         }
 
     } catch (error) {
-        console.error('พังไม่เป็นท่า:', error);
+        console.error('[Error Handling]: เกิดข้อผิดพลาด:', error);
         await message.reply('ระบบรวนว่ะเพื่อน สมองช็อตแป๊บ 555');
     }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(DISCORD_TOKEN);
